@@ -18,7 +18,7 @@ end
 local litfile = function(filename)
   local lines = {}
   for line in io.lines(filename) do
-    lines[#lines + 1] = line
+    lines[#lines + 1] = line .. "\n"
   end
   return eval(parse(table.concat(lines)))
 end
