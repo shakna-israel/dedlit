@@ -7,6 +7,7 @@ do
 
 	lib.parse = function(str)
 		local r = {}
+		-- TODO: Allow changing the lexer during processing...?
 		for w in str:gmatch("```(.-)```") do
 			r[#r + 1] = w
 		end
@@ -29,18 +30,24 @@ do
 	end
 
 	if arg then
-		if arg[1] ~= nil and arg[1] ~= "--help" then
-			return lib.litfile(arg[1])
-		else
-			print(string.format(
+		for idx, val in ipairs(arg) do
+			if val == "--help" then
+				print(string.format(
 					"dedlit v%d.%d.%d, a dead simple literate Lua.\n",
 					lib.version[1], lib.version[2], lib.version[3]
+					)
 				)
-			)
-			print("Usage: dedlit [file|--help]\n")
-			print("dedlit expects that the given file contains any Lua snippets between three backticks either side.")
-			print("e.g. ```print(\"Hello, World!\")```")
+				print("Usage: dedlit [--help|filenames...]\n")
+				-- TODO: Expanded help
+				return true
+			end
 		end
+
+		local ret = true
+		for idx, val in ipairs(arg) do
+			ret = lib.litfile(arg[1])
+		end
+		return not not ret
 	else
 		return lib
 	end
