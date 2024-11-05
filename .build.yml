@@ -1,0 +1,14 @@
+image: alpine/edge
+packages:
+  - build-base
+  - luajit
+  - lua5.3
+sources:
+  - https://git.sr.ht/~shakna/dedlit
+tasks:
+  - test_luajit: |
+      cd dedlit
+      luajit test.lua
+  - test_53: |
+      cd dedlit
+      lua5.3 test.lua

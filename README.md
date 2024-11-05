@@ -4,6 +4,8 @@ A dead simple literate Lua
 
 ---
 
+[![builds.sr.ht status](https://builds.sr.ht/~shakna/dedlit.svg)](https://builds.sr.ht/~shakna/dedlit?)
+
 ## Install
 
     luarocks install dedlit
