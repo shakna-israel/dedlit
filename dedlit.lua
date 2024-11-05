@@ -37,9 +37,9 @@ do
 	end
 
 	lib.get_line = function(str, start)
-		local line_count = 0
+		local line_count = 1
 
-		for i=1, start+1 do
+		for i=1, (start or 0)+1 do
 			local c = str:sub(i, i)
 			if c == '\n' then
 				line_count = line_count + 1
