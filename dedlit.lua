@@ -5,16 +5,40 @@ do
 
 	lib.version = {2, 0, 0}
 
+	do
+		local patterns = {}
+		local default_pattern = "```(.-)```"
+
+		lib.popsyntax = function()
+			local popped = nil
+			if #patterns > 0 then
+				popped = table.remove(patterns, #patterns)
+			end
+
+			if #patterns < 1 then
+				patterns[#patterns + 1] = default_pattern
+			end
+
+			return popped
+		end
+
+		lib.pushsyntax = function(pattern)
+			patterns[#patterns + 1] = pattern or default_pattern
+			return patterns[#patterns]
+		end
+	end
+
 	lib.parse = function(str)
 		local r = {}
 		-- TODO: Allow changing the lexer during processing...?
 		for w in str:gmatch("```(.-)```") do
 			r[#r + 1] = w
 		end
-		return r
+		return r1
 	end
 
 	lib.eval = function(exp_tbl)
+		-- TODO: Better debug information
 		for _, v in ipairs(exp_tbl) do
 			local f = assert(load(v))
 			f()
