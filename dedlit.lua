@@ -3,6 +3,8 @@ do
 	local concat = concat or table.concat
 	local lib = {}
 
+	lib.version = {2, 0, 0}
+
 	lib.parse = function(str)
 		local r = {}
 		for w in str:gmatch("```(.-)```") do
@@ -30,7 +32,11 @@ do
 		if arg[1] ~= nil and arg[1] ~= "--help" then
 			return lib.litfile(arg[1])
 		else
-			print("dedlit v1.0.0, a dead simple literate Lua.\n")
+			print(string.format(
+					"dedlit v%d.%d.%d, a dead simple literate Lua.\n",
+					lib.version[1], lib.version[2], lib.version[3]
+				)
+			)
 			print("Usage: dedlit [file|--help]\n")
 			print("dedlit expects that the given file contains any Lua snippets between three backticks either side.")
 			print("e.g. ```print(\"Hello, World!\")```")
@@ -38,5 +44,4 @@ do
 	else
 		return lib
 	end
-
 end
