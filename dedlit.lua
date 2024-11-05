@@ -51,10 +51,14 @@ do
 
 	lib.parse = function(str, filename, position)
 		local r = {}
-		-- TODO: Allow changing the lexer during processing...?
-		-- Expose lib.popsyntax and lib.pushsyntax
+		local position = position or 1
 
-		local matches = {string.find(str, lib.syntax(), position or 1)}
+		local syn = lib.syntax()
+		if type(syn) == 'function' then
+			syn = syn(filename, position)
+		end
+
+		local matches = {string.find(str, syn, position)}
 		local begin = table.remove(matches, 1) or nil
 		local ender = table.remove(matches, 1) or nil
 
