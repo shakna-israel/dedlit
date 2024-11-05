@@ -61,6 +61,50 @@ It also supplies some functions, to allow controlling the lexer:
 
     * If the lexer pattern is a function, it is *not* evaluated being comparison.
 
+## Library Usage
+
+If the `arg` table is not in the environment, then dedlit can be `require`d as a library.
+
+    `require "dedlit"`
+
+It exposes:
+
+* `dedlit.version`
+
+    * A table, representing the version of the library.
+
+* `dedlit.popsyntax`
+
+    * The same as given in the CLI.
+
+* `dedlit.pushsyntax`
+
+    * The same as given in the CLI.
+
+* `dedlit.syntax`
+
+    * The same as given in the CLI.
+
+* `dedlit.issyntax`
+
+    * The same as given in the CLI.
+
+* `dedlit.get_line(string, start)`
+
+    * Given the start index, returns the number of newlines before that position in the string.
+
+* `dedlit.parse(str, filename, position)`
+
+    * Parses *and* evaluates a given string, using the filename as metadata, and starting at `position` or `1` as the string index.
+
+* `dedlit.eval(exp_tbl, line, filename)`
+
+    * Given a table of string blocks to evaluate, and line number and filename as metadata, runs the blocks in the expected environment.
+
+* `dedlit.litfile(filename)`
+
+    * Runs the parser and evaluator over a file associated with the filename, and returns the result.
+
 ---
 
 ## Why?
