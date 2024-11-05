@@ -111,7 +111,7 @@ do
 		return lib.parse(concat(lines), filename)
 	end
 
-	if arg then
+	if not debug or not debug.getinfo(3) then
 		for idx, val in ipairs(arg) do
 			if val == "--help" then
 				print(string.format(
