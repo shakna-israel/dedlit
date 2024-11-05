@@ -18,15 +18,48 @@ dedlit takes a given file, and executes any code found fenced in triple backtick
     
 It ignores the rest, which allows you to use whatever syntax you feel like.
 
-It also supplies four functions, to allow controlling the lexer:
+The environment is preserved between evaluation, but each code section is expected to be complete.
+An error will be thrown if this proves not to be the case.
 
-* `pushsyntax(x)` - Allows you to push a new pattern to match against, instead of the default triple backtick.
+It also supplies some functions, to allow controlling the lexer:
 
-* `popsyntax()` - Allows you to remove the top-level pattern to match against. If all patterns are removed, things return to the default.
+* Default pattern: The default pattern, referenced below, cannot be directly accessed. However, it is `"```(.-)```"`.
 
-* `syntax()` - Returns the current lexer pattern as a string.
+* `pushsyntax([x])`
 
-* `issyntax(x)` - Returns a boolean if `x` matches the current lexer pattern.
+    * Allows you to push a new pattern to match against, instead of the default.
+
+    * If no pattern is supplied, the default pattern is pushed to the end of the stack.
+
+    * The pattern may be a Lua pattern string.
+
+    * The pattern may be a function, optionally taking a filename, and a string index.
+
+        * This will be called each time, before matching.
+
+        * e.g. `function(filename, position) return "```(.-)```" end`
+
+    * Returns the new pattern.
+
+* `popsyntax()`
+
+    * Allows you to remove the top-level pattern to match against.
+
+    * If all patterns are removed, the default pattern is pushed to the stack.
+
+    * Returns the popped pattern.
+
+* `syntax()`
+
+    * Returns the currently active lexer pattern.
+
+        * This may be a string, or a function.
+
+* `issyntax(x)`
+
+    * Returns a boolean if `x` matches the current lexer pattern.
+
+    * If the lexer pattern is a function, it is *not* evaluated being comparison.
 
 ---
 
