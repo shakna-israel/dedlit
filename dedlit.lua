@@ -6,8 +6,8 @@ do
 	lib.version = {2, 0, 0}
 
 	do
-		local patterns = {}
 		local default_pattern = "```(.-)```"
+		local patterns = {default_pattern}
 
 		lib.popsyntax = function()
 			local popped = nil
@@ -26,22 +26,77 @@ do
 			patterns[#patterns + 1] = pattern or default_pattern
 			return patterns[#patterns]
 		end
+
+		lib.syntax = function()
+			return patterns[#patterns]
+		end
+
+		lib.issyntax = function(x)
+			return x == patterns[#patterns]
+		end
 	end
 
-	lib.parse = function(str)
+	lib.get_line = function(str, start)
+		local line_count = 0
+
+		for i=1, start+1 do
+			local c = str:sub(i, i)
+			if c == '\n' then
+				line_count = line_count + 1
+			end
+		end
+
+		return line_count
+	end
+
+	lib.parse = function(str, filename, position)
 		local r = {}
 		-- TODO: Allow changing the lexer during processing...?
-		for w in str:gmatch("```(.-)```") do
-			r[#r + 1] = w
+		-- Expose lib.popsyntax and lib.pushsyntax
+
+		local matches = {string.find(str, lib.syntax(), position or 1)}
+		local begin = table.remove(matches, 1) or nil
+		local ender = table.remove(matches, 1) or nil
+
+		if #matches > 0 then
+			lib.eval({matches[1]}, lib.get_line(str, begin), filename)
+			return lib.parse(str, filename, ender + 1)
 		end
-		return r1
 	end
 
-	lib.eval = function(exp_tbl)
-		-- TODO: Better debug information
-		for _, v in ipairs(exp_tbl) do
-			local f = assert(load(v))
-			f()
+	do
+		local copy_state
+		copy_state = function(x, seen)
+			local seen = seen or {}
+
+			if seen[x] then
+				return seen[x]
+			end
+
+			if type(x) == 'table' then
+				local copy = {}
+				seen[x] = copy
+				for k, v in pairs(x) do
+					copy[copy_state(k, seen)] = copy_state(v, seen)
+				end
+				setmetatable(copy, copy_state(x, seen))
+				return copy
+			end
+
+			return x
+		end
+		local eval_env = copy_state(_G)
+		eval_env.popsyntax = lib.popsyntax
+		eval_env.pushsyntax = lib.pushsyntax
+		eval_env.syntax = lib.syntax
+		eval_env.issyntax = lib.issyntax
+
+		lib.eval = function(exp_tbl, line, filename)
+			for _, v in ipairs(exp_tbl) do
+				print(line, filename)
+				local f = assert(load(v, string.format("%q offset line %d", filename or "<unknown>", line), "t", eval_env))
+				f()
+			end
 		end
 	end
 
@@ -50,7 +105,7 @@ do
 		for line in io.lines(filename) do
 			lines[#lines + 1] = line .. "\n"
 		end
-		return lib.eval(lib.parse(concat(lines)))
+		return lib.parse(concat(lines), filename)
 	end
 
 	if arg then
