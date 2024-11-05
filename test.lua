@@ -10,6 +10,9 @@ assert(dedlit.get_line("nolines") == 1)
 assert(dedlit.get_line("nolines", 1) == 1)
 assert(dedlit.get_line("nolines", 2) == 1)
 
+assert(dedlit.get_line("oneline\ntwoline") == 2)
+assert(dedlit.get_line("oneline\ntwoline", 6) == 1)
+
 assert(dedlit.popsyntax)
 assert(dedlit.pushsyntax)
 assert(dedlit.issyntax)
