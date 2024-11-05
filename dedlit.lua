@@ -1,33 +1,42 @@
-local load = loadstring or load
+do
+	local load = loadstring or load
+	local concat = concat or table.concat
+	local lib = {}
 
-local parse = function(str)
-	local r = {}
-	for w in str:gmatch("```(.-)```") do
-		r[#r + 1] = w
+	lib.parse = function(str)
+		local r = {}
+		for w in str:gmatch("```(.-)```") do
+			r[#r + 1] = w
+		end
+		return r
 	end
-	return r
-end
 
-local eval = function(exp_tbl)
-	for _, v in ipairs(exp_tbl) do
-		local f = assert(load(v))
-		f()
+	lib.eval = function(exp_tbl)
+		for _, v in ipairs(exp_tbl) do
+			local f = assert(load(v))
+			f()
+		end
 	end
-end
 
-local litfile = function(filename)
-	local lines = {}
-	for line in io.lines(filename) do
-		lines[#lines + 1] = line .. "\n"
+	lib.litfile = function(filename)
+		local lines = {}
+		for line in io.lines(filename) do
+			lines[#lines + 1] = line .. "\n"
+		end
+		return lib.eval(lib.parse(concat(lines)))
 	end
-	return eval(parse(table.concat(lines)))
-end
 
-if arg[1] ~= nil and arg[1] ~= "--help" then
-	litfile(arg[1])
-else
-	print("dedlit v1.0.0, a dead simple literate Lua.\n")
-	print("Usage: dedlit [file|--help]\n")
-	print("dedlit expects that the given file contains any Lua snippets between three backticks either side.")
-	print("e.g. ```print(\"Hello, World!\")```")
+	if arg then
+		if arg[1] ~= nil and arg[1] ~= "--help" then
+			return lib.litfile(arg[1])
+		else
+			print("dedlit v1.0.0, a dead simple literate Lua.\n")
+			print("Usage: dedlit [file|--help]\n")
+			print("dedlit expects that the given file contains any Lua snippets between three backticks either side.")
+			print("e.g. ```print(\"Hello, World!\")```")
+		end
+	else
+		return lib
+	end
+
 end
