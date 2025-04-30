@@ -98,7 +98,7 @@ do
 		lib.eval = function(exp_tbl, line, filename)
 			for _, v in ipairs(exp_tbl) do
 				local f = assert(load(v, string.format("%q offset line %d", filename or "<unknown>", line), "t", eval_env))
-				f()
+				assert(pcall(f))
 			end
 		end
 	end

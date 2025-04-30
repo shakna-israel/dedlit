@@ -49,3 +49,17 @@ assert(dedlit.parse)
 assert(dedlit.eval)
 assert(dedlit.litfile)
 
+-- eval is side-effect only. No returns.
+-- Executes everything inside the eval environment, not top-level.
+assert(dedlit.eval({}, 1, ".test") == nil)
+assert(dedlit.eval({"return 10"}, 1, ".test") == nil)
+
+-- parse is side-effect only. No returns
+-- Appends strings to the in-progress document.
+assert(dedlit.parse("```return hello```") == nil)
+
+-- Litfile is side-effect only. No returns.
+-- Runs parse against a file.
+assert(dedlit.litfile("example.lua") == nil)
+
+-- TODO: Test against actual files.
