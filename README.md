@@ -17,7 +17,7 @@ A dead simple literate Lua
 dedlit takes a given file, and executes any code found fenced in triple backticks:
 
     ```print("Hello, World")```
-    
+
 It ignores the rest, which allows you to use whatever syntax you feel like.
 
 The environment is preserved between evaluation, but each code section is expected to be complete.
@@ -77,19 +77,19 @@ It exposes:
 
 * `dedlit.popsyntax`
 
-    * The same as given in the CLI.
+    * The same as given in the usual usage.
 
 * `dedlit.pushsyntax`
 
-    * The same as given in the CLI.
+    * The same as given in the usual usage.
 
 * `dedlit.syntax`
 
-    * The same as given in the CLI.
+    * The same as given in the usual usage.
 
 * `dedlit.issyntax`
 
-    * The same as given in the CLI.
+    * The same as given in the usual usage.
 
 * `dedlit.get_line(string, start)`
 
@@ -97,15 +97,21 @@ It exposes:
 
 * `dedlit.parse(str, filename, position)`
 
+    * No real return, as it is mostly side-effects to the evaluation environment.
+
     * Parses *and* evaluates a given string, using the filename as metadata, and starting at `position` or `1` as the string index.
 
 * `dedlit.eval(exp_tbl, line, filename)`
+
+    * No real return, as it is mostly side-effects to the evaluation environment.
 
     * Given a table of string blocks to evaluate, and line number and filename as metadata, runs the blocks in the expected environment.
 
 * `dedlit.litfile(filename)`
 
-    * Runs the parser and evaluator over a file associated with the filename, and returns the result.
+    * No real return, as it is mostly side-effects to the evaluation environment.
+
+    * Runs the parser and evaluator over a file associated with the filename.
 
 ---
 
