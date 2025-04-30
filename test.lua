@@ -45,6 +45,13 @@ do
 	end
 end
 
+assert(dedlit.pushsyntax("##(-.)##"))
+assert(dedlit.issyntax("##(-.)##"))
+assert(dedlit.pushsyntax())
+assert(dedlit.issyntax("```(.-)```"))
+assert(dedlit.popsyntax())
+assert(dedlit.popsyntax())
+
 assert(dedlit.parse)
 assert(dedlit.eval)
 assert(dedlit.litfile)
