@@ -3,7 +3,7 @@ do
 	local concat = concat or table.concat
 	local lib = {}
 
-	lib.version = {2, 0, 0}
+	lib.version = {2, 0, 2}
 
 	do
 		local default_pattern = "```(.-)```"

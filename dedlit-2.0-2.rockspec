@@ -1,9 +1,9 @@
 rockspec_format = "3.0"
 package = "dedlit"
-version = "2.0-1"
+version = "2.0-2"
 source = {
   url = "git://github.com/shakna-israel/dedlit",
-  tag = "2.0.1"
+  tag = "2.0-2"
 }
 description = {
   summary = "A dead simple literate Lua.",
