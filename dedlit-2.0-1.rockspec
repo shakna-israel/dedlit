@@ -1,3 +1,4 @@
+rockspec_format = "3.0"
 package = "dedlit"
 version = "2.0-1"
 source = {
