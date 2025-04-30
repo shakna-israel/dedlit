@@ -61,7 +61,7 @@ It also supplies some functions, to allow controlling the lexer:
 
     * Returns a boolean if `x` matches the current lexer pattern.
 
-    * If the lexer pattern is a function, it is *not* evaluated being comparison.
+    * If the lexer pattern is a function, it is *not* evaluated by comparison.
 
 ## Library Usage
 
@@ -111,7 +111,7 @@ It exposes:
 
 ## Why?
 
-dedlit was thrown together in 5mins, because I felt the existing tools were overly restrictive, or overly complex, and am writing a series of documents on implementing a language in Lua.
+dedlit was originally thrown together in 5mins, because I felt the existing tools were overly restrictive, or overly complex, and am writing a series of documents on implementing a language in Lua.
 
 I don't expect it is appropriate for any other purpose, but considering how simple it is, you may find some.
 
